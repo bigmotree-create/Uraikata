@@ -1,5 +1,5 @@
--- [PROTOKOL UI: REPLIKASI IDENTIK HTML KE LUA KLIEN]
--- Mode: Zero-Error, Auto-Scaling Mobile Viewport
+-- [PROTOKOL UI: REPLIKASI IDENTIK HTML KE LUA KLIEN - VERSI KOMPAK (MINIMALIST SQUARE)]
+-- Mode: Zero-Error, Absolute Pixel Sizing, Non-Obstructive
 
 local CoreGui = game:GetService("CoreGui")
 local UI_NAME = "RadarKataMobile_Absolute"
@@ -2378,67 +2378,67 @@ ScreenGui.Parent = CoreGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.ResetOnSpawn = false
 
--- Body Container (Menyerupai body HTML)
+-- Body Container (Dimensi dipaksa menjadi kotak kecil absolut: 260x280 piksel)
 local MainContainer = Instance.new("Frame")
 MainContainer.Name = "MainContainer"
 MainContainer.Parent = ScreenGui
 MainContainer.BackgroundColor3 = Color3.fromHex("#0d0d0d")
 MainContainer.BorderSizePixel = 0
-MainContainer.Position = UDim2.new(0.05, 0, 0.05, 0)
-MainContainer.Size = UDim2.new(0.9, 0, 0.9, 0)
+MainContainer.Position = UDim2.new(0, 20, 0.3, 0) -- Posisi default di pinggir kiri agar tidak menutupi tengah layar
+MainContainer.Size = UDim2.new(0, 260, 0, 280) 
 MainContainer.Active = true
-MainContainer.Draggable = true
+MainContainer.Draggable = true -- Dapat digeser pengguna
 
 local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0, 10)
+MainCorner.CornerRadius = UDim.new(0, 8)
 MainCorner.Parent = MainContainer
 
 local MainPadding = Instance.new("UIPadding")
-MainPadding.PaddingTop = UDim.new(0, 10)
-MainPadding.PaddingBottom = UDim.new(0, 10)
-MainPadding.PaddingLeft = UDim.new(0, 10)
-MainPadding.PaddingRight = UDim.new(0, 10)
+MainPadding.PaddingTop = UDim.new(0, 8)
+MainPadding.PaddingBottom = UDim.new(0, 8)
+MainPadding.PaddingLeft = UDim.new(0, 8)
+MainPadding.PaddingRight = UDim.new(0, 8)
 MainPadding.Parent = MainContainer
 
--- Search Container (Flex Layout)
+-- Search Container
 local SearchContainer = Instance.new("Frame")
 SearchContainer.Name = "SearchContainer"
 SearchContainer.Parent = MainContainer
 SearchContainer.BackgroundTransparency = 1
-SearchContainer.Size = UDim2.new(1, 0, 0, 50)
+SearchContainer.Size = UDim2.new(1, 0, 0, 35) -- Tinggi dikurangi
 
 local SearchLayout = Instance.new("UIListLayout")
 SearchLayout.Parent = SearchContainer
 SearchLayout.FillDirection = Enum.FillDirection.Horizontal
 SearchLayout.SortOrder = Enum.SortOrder.LayoutOrder
-SearchLayout.Padding = UDim.new(0, 8)
+SearchLayout.Padding = UDim.new(0, 5)
 
 -- Input 1: Awalan
 local InputStart = Instance.new("TextBox")
 InputStart.Name = "InputStart"
 InputStart.Parent = SearchContainer
 InputStart.BackgroundColor3 = Color3.fromHex("#1a1a1a")
-InputStart.Size = UDim2.new(0.6, -4, 1, 0)
+InputStart.Size = UDim2.new(0.55, -2, 1, 0)
 InputStart.Font = Enum.Font.SourceSansBold
-InputStart.PlaceholderText = "Awalan (cth: a)..."
+InputStart.PlaceholderText = "Awal..."
 InputStart.Text = ""
 InputStart.TextColor3 = Color3.fromHex("#00ffcc")
 InputStart.PlaceholderColor3 = Color3.fromHex("#555555")
-InputStart.TextSize = 18
+InputStart.TextSize = 14 -- Ukuran font dikecilkan
 InputStart.TextXAlignment = Enum.TextXAlignment.Left
 InputStart.ClearTextOnFocus = false
 
 local StartPadding = Instance.new("UIPadding")
-StartPadding.PaddingLeft = UDim.new(0, 15)
+StartPadding.PaddingLeft = UDim.new(0, 8)
 StartPadding.Parent = InputStart
 
 local StartCorner = Instance.new("UICorner")
-StartCorner.CornerRadius = UDim.new(0, 10)
+StartCorner.CornerRadius = UDim.new(0, 6)
 StartCorner.Parent = InputStart
 
 local StartStroke = Instance.new("UIStroke")
 StartStroke.Color = Color3.fromHex("#333333")
-StartStroke.Thickness = 2
+StartStroke.Thickness = 1
 StartStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 StartStroke.Parent = InputStart
 
@@ -2447,27 +2447,27 @@ local InputEnd = Instance.new("TextBox")
 InputEnd.Name = "InputEnd"
 InputEnd.Parent = SearchContainer
 InputEnd.BackgroundColor3 = Color3.fromHex("#1a1a1a")
-InputEnd.Size = UDim2.new(0.4, -4, 1, 0)
+InputEnd.Size = UDim2.new(0.45, -3, 1, 0)
 InputEnd.Font = Enum.Font.SourceSansBold
-InputEnd.PlaceholderText = "Akhir (1-2)"
+InputEnd.PlaceholderText = "Akhir..."
 InputEnd.Text = ""
 InputEnd.TextColor3 = Color3.fromHex("#00ffcc")
 InputEnd.PlaceholderColor3 = Color3.fromHex("#555555")
-InputEnd.TextSize = 18
+InputEnd.TextSize = 14
 InputEnd.TextXAlignment = Enum.TextXAlignment.Left
 InputEnd.ClearTextOnFocus = false
 
 local EndPadding = Instance.new("UIPadding")
-EndPadding.PaddingLeft = UDim.new(0, 15)
+EndPadding.PaddingLeft = UDim.new(0, 8)
 EndPadding.Parent = InputEnd
 
 local EndCorner = Instance.new("UICorner")
-EndCorner.CornerRadius = UDim.new(0, 10)
+EndCorner.CornerRadius = UDim.new(0, 6)
 EndCorner.Parent = InputEnd
 
 local EndStroke = Instance.new("UIStroke")
 EndStroke.Color = Color3.fromHex("#333333")
-EndStroke.Thickness = 2
+EndStroke.Thickness = 1
 EndStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 EndStroke.Parent = InputEnd
 
@@ -2478,16 +2478,16 @@ ResultsContainer.Parent = MainContainer
 ResultsContainer.Active = true
 ResultsContainer.BackgroundTransparency = 1
 ResultsContainer.BorderSizePixel = 0
-ResultsContainer.Position = UDim2.new(0, 0, 0, 60)
-ResultsContainer.Size = UDim2.new(1, 0, 1, -60)
+ResultsContainer.Position = UDim2.new(0, 0, 0, 45)
+ResultsContainer.Size = UDim2.new(1, 0, 1, -45)
 ResultsContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
-ResultsContainer.ScrollBarThickness = 5
+ResultsContainer.ScrollBarThickness = 3
 ResultsContainer.ScrollBarImageColor3 = Color3.fromHex("#333333")
 
 local ResultsLayout = Instance.new("UIListLayout")
 ResultsLayout.Parent = ResultsContainer
 ResultsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-ResultsLayout.Padding = UDim.new(0, 8)
+ResultsLayout.Padding = UDim.new(0, 5)
 
 -- ==========================================
 -- MESIN PENCARI INTI (LOGIKA)
@@ -2528,28 +2528,26 @@ local function executeSearch()
         end
 
         if isMatch then
-            -- Tombol Hasil (Replikasi kelas .word-btn)
             local BtnWord = Instance.new("TextButton")
             BtnWord.Name = word
             BtnWord.Parent = ResultsContainer
             BtnWord.BackgroundColor3 = Color3.fromHex("#262626")
-            BtnWord.Size = UDim2.new(1, -10, 0, 50)
+            BtnWord.Size = UDim2.new(1, -8, 0, 32) -- Tombol dikecilkan
             BtnWord.Font = Enum.Font.SourceSansBold
             BtnWord.Text = word
             BtnWord.TextColor3 = Color3.fromHex("#ffffff")
-            BtnWord.TextSize = 18
+            BtnWord.TextSize = 14
             BtnWord.TextXAlignment = Enum.TextXAlignment.Left
-            BtnWord.AutoButtonColor = false -- Custom active state
+            BtnWord.AutoButtonColor = false
 
             local BtnCorner = Instance.new("UICorner")
-            BtnCorner.CornerRadius = UDim.new(0, 8)
+            BtnCorner.CornerRadius = UDim.new(0, 6)
             BtnCorner.Parent = BtnWord
 
             local BtnPadding = Instance.new("UIPadding")
-            BtnPadding.PaddingLeft = UDim.new(0, 15)
+            BtnPadding.PaddingLeft = UDim.new(0, 10)
             BtnPadding.Parent = BtnWord
 
-            -- Efek klik & Copy to Clipboard
             BtnWord.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
                     BtnWord.BackgroundColor3 = Color3.fromHex("#00ffcc")
@@ -2574,8 +2572,8 @@ local function executeSearch()
         end
     end
     
-    -- Auto-resize scroll area (50px height + 8px padding per item)
-    ResultsContainer.CanvasSize = UDim2.new(0, 0, 0, renderCount * 58)
+    -- Kalkulasi area gulir (32px height + 5px padding per item)
+    ResultsContainer.CanvasSize = UDim2.new(0, 0, 0, renderCount * 37)
 end
 
 -- ==========================================
@@ -2590,7 +2588,6 @@ InputEnd:GetPropertyChangedSignal("Text"):Connect(function()
     executeSearch()
 end)
 
--- Efek fokus border (Replikasi CSS :focus)
 InputStart.Focused:Connect(function() StartStroke.Color = Color3.fromHex("#00ffcc") end)
 InputStart.FocusLost:Connect(function() StartStroke.Color = Color3.fromHex("#333333") end)
 
