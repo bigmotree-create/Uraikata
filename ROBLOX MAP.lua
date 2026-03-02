@@ -1,17 +1,14 @@
--- [ARSITEKTUR LUA: RADAR KATA MOBILE DUAL PARAMETER]
--- Eksekusi melalui: loadstring(game:HttpGet("URL_GITHUB_RAW"))()
--- Lingkungan: Level 7/8 Executor (Delta/KRNL/Synapse)
+-- [PROTOKOL UI: REPLIKASI IDENTIK HTML KE LUA KLIEN]
+-- Mode: Zero-Error, Auto-Scaling Mobile Viewport
 
 local CoreGui = game:GetService("CoreGui")
-local UserInputService = game:GetService("UserInputService")
+local UI_NAME = "RadarKataMobile_Absolute"
 
-local UI_NAME = "RadarKataMobile"
 if CoreGui:FindFirstChild(UI_NAME) then
     CoreGui[UI_NAME]:Destroy()
 end
 
 -- [DATABASE KATA ABSOLUT]
--- Sistem diinstruksikan untuk tidak menyertakan nama spesifik (Protokol Koreksi).
 local database = { "A-BETA", "ABAD", "ABADI", "ABAHAN", "ABAKUS", "ABAL", "ABALALU", "ABAM", "ABAR", "ABDI",
 "ABDUSEN", "ABIOSESTON", "ABIR", "ABITI", "ABJAD", "ABLASI", "ABLATIF", "ABRASI",
 "ABRIT-ABRITAN", "ABSES", "ABSOLUT", "ABSORBSI", "ABSORPTANS", "ABSORPTIVITAS",
@@ -2369,100 +2366,135 @@ local database = { "A-BETA", "ABAD", "ABADI", "ABAHAN", "ABAKUS", "ABAL", "ABALA
 "ZOOGENESIS", "ZOOGEOGENESIS", "ZOOSADISME", "ZOOSPORANGIUM", "ZOOTEKNIKA",
 "ZORBING", "ZOSTER", "ZUM", "ZUSANLI", "MANUSIA", "API", "IKAN", "AYAM", "BOLA", "BUKU", "CINTA"
 }
-
 local MAX_RENDER = 100
 
 -- ==========================================
--- ANTARMUKA PENGGUNA (GUI DOM)
+-- PEMBUATAN ELEMEN UI (DOM REPLICATION)
 -- ==========================================
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = UI_NAME
 ScreenGui.Parent = CoreGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
 
-local MainFrame = Instance.new("Frame")
-MainFrame.Name = "MainFrame"
-MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
-MainFrame.BorderColor3 = Color3.fromRGB(51, 51, 51)
-MainFrame.BorderSizePixel = 2
-MainFrame.Position = UDim2.new(0.5, -150, 0.2, 0)
-MainFrame.Size = UDim2.new(0, 300, 0, 400)
-MainFrame.Active = true
-MainFrame.Draggable = true
+-- Body Container (Menyerupai body HTML)
+local MainContainer = Instance.new("Frame")
+MainContainer.Name = "MainContainer"
+MainContainer.Parent = ScreenGui
+MainContainer.BackgroundColor3 = Color3.fromHex("#0d0d0d")
+MainContainer.BorderSizePixel = 0
+MainContainer.Position = UDim2.new(0.05, 0, 0.05, 0)
+MainContainer.Size = UDim2.new(0.9, 0, 0.9, 0)
+MainContainer.Active = true
+MainContainer.Draggable = true
 
-local TitleBar = Instance.new("TextLabel")
-TitleBar.Name = "TitleBar"
-TitleBar.Parent = MainFrame
-TitleBar.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-TitleBar.BorderSizePixel = 0
-TitleBar.Size = UDim2.new(1, 0, 0, 30)
-TitleBar.Font = Enum.Font.Code
-TitleBar.Text = " RADAR KATA MOBILE"
-TitleBar.TextColor3 = Color3.fromRGB(0, 255, 204)
-TitleBar.TextSize = 14
-TitleBar.FontWeight = Enum.FontWeight.Bold
-TitleBar.TextXAlignment = Enum.TextXAlignment.Left
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 10)
+MainCorner.Parent = MainContainer
 
-local InputContainer = Instance.new("Frame")
-InputContainer.Name = "InputContainer"
-InputContainer.Parent = MainFrame
-InputContainer.BackgroundTransparency = 1
-InputContainer.Position = UDim2.new(0, 10, 0, 40)
-InputContainer.Size = UDim2.new(1, -20, 0, 40)
+local MainPadding = Instance.new("UIPadding")
+MainPadding.PaddingTop = UDim.new(0, 10)
+MainPadding.PaddingBottom = UDim.new(0, 10)
+MainPadding.PaddingLeft = UDim.new(0, 10)
+MainPadding.PaddingRight = UDim.new(0, 10)
+MainPadding.Parent = MainContainer
 
+-- Search Container (Flex Layout)
+local SearchContainer = Instance.new("Frame")
+SearchContainer.Name = "SearchContainer"
+SearchContainer.Parent = MainContainer
+SearchContainer.BackgroundTransparency = 1
+SearchContainer.Size = UDim2.new(1, 0, 0, 50)
+
+local SearchLayout = Instance.new("UIListLayout")
+SearchLayout.Parent = SearchContainer
+SearchLayout.FillDirection = Enum.FillDirection.Horizontal
+SearchLayout.SortOrder = Enum.SortOrder.LayoutOrder
+SearchLayout.Padding = UDim.new(0, 8)
+
+-- Input 1: Awalan
 local InputStart = Instance.new("TextBox")
 InputStart.Name = "InputStart"
-InputStart.Parent = InputContainer
-InputStart.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-InputStart.BorderColor3 = Color3.fromRGB(51, 51, 51)
-InputStart.Position = UDim2.new(0, 0, 0, 0)
-InputStart.Size = UDim2.new(0.65, -5, 1, 0)
-InputStart.Font = Enum.Font.Code
-InputStart.PlaceholderText = "Awalan (cth: a)"
+InputStart.Parent = SearchContainer
+InputStart.BackgroundColor3 = Color3.fromHex("#1a1a1a")
+InputStart.Size = UDim2.new(0.6, -4, 1, 0)
+InputStart.Font = Enum.Font.SourceSansBold
+InputStart.PlaceholderText = "Awalan (cth: a)..."
 InputStart.Text = ""
-InputStart.TextColor3 = Color3.fromRGB(0, 255, 204)
-InputStart.TextSize = 14
+InputStart.TextColor3 = Color3.fromHex("#00ffcc")
+InputStart.PlaceholderColor3 = Color3.fromHex("#555555")
+InputStart.TextSize = 18
+InputStart.TextXAlignment = Enum.TextXAlignment.Left
 InputStart.ClearTextOnFocus = false
 
+local StartPadding = Instance.new("UIPadding")
+StartPadding.PaddingLeft = UDim.new(0, 15)
+StartPadding.Parent = InputStart
+
+local StartCorner = Instance.new("UICorner")
+StartCorner.CornerRadius = UDim.new(0, 10)
+StartCorner.Parent = InputStart
+
+local StartStroke = Instance.new("UIStroke")
+StartStroke.Color = Color3.fromHex("#333333")
+StartStroke.Thickness = 2
+StartStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+StartStroke.Parent = InputStart
+
+-- Input 2: Akhiran
 local InputEnd = Instance.new("TextBox")
 InputEnd.Name = "InputEnd"
-InputEnd.Parent = InputContainer
-InputEnd.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-InputEnd.BorderColor3 = Color3.fromRGB(51, 51, 51)
-InputEnd.Position = UDim2.new(0.65, 5, 0, 0)
-InputEnd.Size = UDim2.new(0.35, -5, 1, 0)
-InputEnd.Font = Enum.Font.Code
-InputEnd.PlaceholderText = "Akhir (2hr)"
+InputEnd.Parent = SearchContainer
+InputEnd.BackgroundColor3 = Color3.fromHex("#1a1a1a")
+InputEnd.Size = UDim2.new(0.4, -4, 1, 0)
+InputEnd.Font = Enum.Font.SourceSansBold
+InputEnd.PlaceholderText = "Akhir (1-2)"
 InputEnd.Text = ""
-InputEnd.TextColor3 = Color3.fromRGB(0, 255, 204)
-InputEnd.TextSize = 14
+InputEnd.TextColor3 = Color3.fromHex("#00ffcc")
+InputEnd.PlaceholderColor3 = Color3.fromHex("#555555")
+InputEnd.TextSize = 18
+InputEnd.TextXAlignment = Enum.TextXAlignment.Left
 InputEnd.ClearTextOnFocus = false
 
-local ScrollResults = Instance.new("ScrollingFrame")
-ScrollResults.Name = "ScrollResults"
-ScrollResults.Parent = MainFrame
-ScrollResults.Active = true
-ScrollResults.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
-ScrollResults.BorderSizePixel = 0
-ScrollResults.Position = UDim2.new(0, 10, 0, 90)
-ScrollResults.Size = UDim2.new(1, -20, 1, -100)
-ScrollResults.CanvasSize = UDim2.new(0, 0, 0, 0)
-ScrollResults.ScrollBarThickness = 4
-ScrollResults.ScrollBarImageColor3 = Color3.fromRGB(51, 51, 51)
+local EndPadding = Instance.new("UIPadding")
+EndPadding.PaddingLeft = UDim.new(0, 15)
+EndPadding.Parent = InputEnd
 
-local UIListLayout = Instance.new("UIListLayout")
-UIListLayout.Parent = ScrollResults
-UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0, 5)
+local EndCorner = Instance.new("UICorner")
+EndCorner.CornerRadius = UDim.new(0, 10)
+EndCorner.Parent = InputEnd
+
+local EndStroke = Instance.new("UIStroke")
+EndStroke.Color = Color3.fromHex("#333333")
+EndStroke.Thickness = 2
+EndStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+EndStroke.Parent = InputEnd
+
+-- Results Container
+local ResultsContainer = Instance.new("ScrollingFrame")
+ResultsContainer.Name = "ResultsContainer"
+ResultsContainer.Parent = MainContainer
+ResultsContainer.Active = true
+ResultsContainer.BackgroundTransparency = 1
+ResultsContainer.BorderSizePixel = 0
+ResultsContainer.Position = UDim2.new(0, 0, 0, 60)
+ResultsContainer.Size = UDim2.new(1, 0, 1, -60)
+ResultsContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
+ResultsContainer.ScrollBarThickness = 5
+ResultsContainer.ScrollBarImageColor3 = Color3.fromHex("#333333")
+
+local ResultsLayout = Instance.new("UIListLayout")
+ResultsLayout.Parent = ResultsContainer
+ResultsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ResultsLayout.Padding = UDim.new(0, 8)
 
 -- ==========================================
--- MESIN PENCARI INTI (CORE ENGINE)
+-- MESIN PENCARI INTI (LOGIKA)
 -- ==========================================
 
 local function clearResults()
-    for _, child in ipairs(ScrollResults:GetChildren()) do
+    for _, child in ipairs(ResultsContainer:GetChildren()) do
         if child:IsA("TextButton") then
             child:Destroy()
         end
@@ -2472,24 +2504,21 @@ end
 local function executeSearch()
     clearResults()
     
-    -- Normalisasi parameter (Sanitasi String)
     local startQuery = string.lower(InputStart.Text):match("^%s*(.-)%s*$") or ""
     local endQuery = string.lower(InputEnd.Text):match("^%s*(.-)%s*$") or ""
     
     if startQuery == "" and endQuery == "" then
-        ScrollResults.CanvasSize = UDim2.new(0, 0, 0, 0)
+        ResultsContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
         return
     end
 
     local renderCount = 0
-    local dbLength = #database
 
-    for i = 1, dbLength do
+    for i = 1, #database do
         local word = database[i]
         local lowerWord = string.lower(word)
         local isMatch = false
 
-        -- Evaluasi Logika Kondisional Ganda
         if startQuery ~= "" and endQuery ~= "" then
             isMatch = (string.sub(lowerWord, 1, #startQuery) == startQuery) and (string.sub(lowerWord, -#endQuery) == endQuery)
         elseif startQuery ~= "" then
@@ -2499,29 +2528,43 @@ local function executeSearch()
         end
 
         if isMatch then
-            -- Pembuatan Node Tombol
+            -- Tombol Hasil (Replikasi kelas .word-btn)
             local BtnWord = Instance.new("TextButton")
             BtnWord.Name = word
-            BtnWord.Parent = ScrollResults
-            BtnWord.BackgroundColor3 = Color3.fromRGB(38, 38, 38)
-            BtnWord.BorderSizePixel = 0
-            BtnWord.Size = UDim2.new(1, -10, 0, 40)
-            BtnWord.Font = Enum.Font.Code
-            BtnWord.Text = " " .. word
-            BtnWord.TextColor3 = Color3.fromRGB(255, 255, 255)
-            BtnWord.TextSize = 16
-            BtnWord.FontWeight = Enum.FontWeight.Bold
+            BtnWord.Parent = ResultsContainer
+            BtnWord.BackgroundColor3 = Color3.fromHex("#262626")
+            BtnWord.Size = UDim2.new(1, -10, 0, 50)
+            BtnWord.Font = Enum.Font.SourceSansBold
+            BtnWord.Text = word
+            BtnWord.TextColor3 = Color3.fromHex("#ffffff")
+            BtnWord.TextSize = 18
             BtnWord.TextXAlignment = Enum.TextXAlignment.Left
-            
-            -- Mekanisme Salin ke Clipboard (Fungsi Khusus Executor)
-            BtnWord.MouseButton1Click:Connect(function()
-                if setclipboard then
-                    pcall(function() setclipboard(word) end)
-                    BtnWord.BackgroundColor3 = Color3.fromRGB(0, 255, 204)
-                    BtnWord.TextColor3 = Color3.fromRGB(0, 0, 0)
-                    task.delay(0.2, function()
-                        BtnWord.BackgroundColor3 = Color3.fromRGB(38, 38, 38)
-                        BtnWord.TextColor3 = Color3.fromRGB(255, 255, 255)
+            BtnWord.AutoButtonColor = false -- Custom active state
+
+            local BtnCorner = Instance.new("UICorner")
+            BtnCorner.CornerRadius = UDim.new(0, 8)
+            BtnCorner.Parent = BtnWord
+
+            local BtnPadding = Instance.new("UIPadding")
+            BtnPadding.PaddingLeft = UDim.new(0, 15)
+            BtnPadding.Parent = BtnWord
+
+            -- Efek klik & Copy to Clipboard
+            BtnWord.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    BtnWord.BackgroundColor3 = Color3.fromHex("#00ffcc")
+                    BtnWord.TextColor3 = Color3.fromHex("#000000")
+                end
+            end)
+
+            BtnWord.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    if setclipboard then
+                        pcall(function() setclipboard(word) end)
+                    end
+                    task.delay(0.1, function()
+                        BtnWord.BackgroundColor3 = Color3.fromHex("#262626")
+                        BtnWord.TextColor3 = Color3.fromHex("#ffffff")
                     end)
                 end
             end)
@@ -2531,27 +2574,25 @@ local function executeSearch()
         end
     end
     
-    -- Kalkulasi Dinamis Area Gulir
-    ScrollResults.CanvasSize = UDim2.new(0, 0, 0, renderCount * 45)
+    -- Auto-resize scroll area (50px height + 8px padding per item)
+    ResultsContainer.CanvasSize = UDim2.new(0, 0, 0, renderCount * 58)
 end
 
 -- ==========================================
--- PEMICU WAKTU NYATA & KONTROL INPUT
+-- EVENT LISTENER & EFEK VISUAL
 -- ==========================================
 
 InputStart:GetPropertyChangedSignal("Text"):Connect(executeSearch)
-
 InputEnd:GetPropertyChangedSignal("Text"):Connect(function()
-    -- Membatasi input maksimal 2 karakter pada parameter akhiran
     if #InputEnd.Text > 2 then
         InputEnd.Text = string.sub(InputEnd.Text, 1, 2)
     end
     executeSearch()
 end)
 
--- Optimasi fokus input untuk perangkat mobile
-InputStart.Focused:Connect(function() InputStart.BorderColor3 = Color3.fromRGB(0, 255, 204) end)
-InputStart.FocusLost:Connect(function() InputStart.BorderColor3 = Color3.fromRGB(51, 51, 51) end)
+-- Efek fokus border (Replikasi CSS :focus)
+InputStart.Focused:Connect(function() StartStroke.Color = Color3.fromHex("#00ffcc") end)
+InputStart.FocusLost:Connect(function() StartStroke.Color = Color3.fromHex("#333333") end)
 
-InputEnd.Focused:Connect(function() InputEnd.BorderColor3 = Color3.fromRGB(0, 255, 204) end)
-InputEnd.FocusLost:Connect(function() InputEnd.BorderColor3 = Color3.fromRGB(51, 51, 51) end)
+InputEnd.Focused:Connect(function() EndStroke.Color = Color3.fromHex("#00ffcc") end)
+InputEnd.FocusLost:Connect(function() EndStroke.Color = Color3.fromHex("#333333") end)
